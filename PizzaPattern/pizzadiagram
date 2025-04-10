@@ -1,0 +1,54 @@
+const plantumlEncoder = require('plantuml-encoder');
+const fs = require('fs');
+
+
+const uml = `
+@startuml
+
+class Main {
+    +main(): void
+}
+
+class Pizzeria {
+    -builder: PizzaBuilder
+    +hacerPizza(): Pizza
+}
+
+interface PizzaBuilder {
+    +buildMasa(): void
+    +buildTamaño(): void
+    +buildIngredientes(): void
+    +getPizza(): Pizza
+}
+
+class PizzaHawaianaBuilder {
+    +buildMasa(): void
+    +buildTamaño(): void
+    +buildIngredientes(): void
+    +getPizza(): Pizza
+}
+
+class Pizza {
+    -masa: String
+    -tamaño: String
+    -ingredientes: String
+    +setMasa(masa: String): void
+    +setTamaño(tamaño: String): void
+    +setIngredientes(ingredientes: String): void
+    +mostrarPizza(): void
+}
+
+Main --> Pizzeria : usa
+Pizzeria --> PizzaBuilder : organiza el proceso
+PizzaHawaianaBuilder ..|> PizzaBuilder : implements
+PizzaHawaianaBuilder --> Pizza : crea
+
+@enduml
+`;
+
+
+const encoded = plantumlEncoder.encode(uml);
+const url = `http://www.plantuml.com/plantuml/png/${encoded}`;
+
+console.log("Diagrama generado:");
+console.log(url);
